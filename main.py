@@ -1,38 +1,21 @@
 import os
 import wx
+from app import *
+from panelresource import *
+from paneltool import *
+from panelproperty import *
 
-class PanelLeft(wx.Panel):
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent, -1, style=wx.RAISED_BORDER, size=(50, 500), pos=(0, 51))
-        
-class PanelRight(wx.Panel):
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent, -1, style=wx.RAISED_BORDER, size=(50, 500), pos=(750, 51))
-
-class PanelBottom(wx.Panel):
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent, -1, style=wx.RAISED_BORDER, size=(800, 50), pos=(0, 550))
-
-class PanelTool(wx.Panel):
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent, -1, style=wx.RAISED_BORDER, size=(800, 50))
-        
-        wx.Button(self, -1, "ZoomIn")
-        
-class PanelMain(wx.Panel):
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent, -1)
+theApp = App()
 
 class MainFrame(wx.Frame):
     def __init__(self):
-        wx.Frame.__init__(self, None, -1, "Main Frame", size=(800, 600))
+        wx.Frame.__init__(self, None, -1, "CocosBuilder", size=(1150, 700))
         
+        panel = wx.Panel(self)
+        # panel
+        panelResource = PanelResource(self)
+        panelProperty = PanelProperty(self)
         panelTool = PanelTool(self)
-        panelLeft = PanelLeft(self)
-        panelRight = PanelRight(self)
-        panelBottom = PanelBottom(self)
-        
-        panelMain = PanelMain(self)
         
         # create menu
         menuFile = wx.Menu()
@@ -64,8 +47,10 @@ class MainFrame(wx.Frame):
         # panelToolbar = wx.Panel(self)
         # wx.Button(panelToolbar, -1, "Hello")
         
+        theApp.openProject("/Users/Tom/Desktop/mygit/CocosBuilder-wxPython/test/ccb3project.ccbproj")
+        
     def OnMenuOpen(self, evt):
-        dialog = wx.FileDialog(None, "Choose a file", os.getcwd(), "", "*.ccbpro", wx.OPEN)
+        dialog = wx.FileDialog(None, "Choose a file", os.getcwd(), "", "*.ccbproj", wx.OPEN)
         if dialog.ShowModal() == wx.ID_OK:
             print dialog.GetPath()
         dialog.Destroy()
