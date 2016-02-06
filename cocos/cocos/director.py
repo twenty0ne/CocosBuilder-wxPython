@@ -323,7 +323,8 @@ class Director(event.EventDispatcher):
             kwargs.pop('height', 0)
 
         #: pyglet's window object
-        self.window = window.Window(*args, **kwargs)
+        # self.window = window.Window(*args, **kwargs)
+        self.window = kwargs.get('window', None)
 
         # complete the viewport geometry info, both virtual and real,
         # also set the appropriate on_resize handler
@@ -401,7 +402,7 @@ class Director(event.EventDispatcher):
 
         self._set_scene(scene)
 
-        event_loop.run()
+        #event_loop.run()
 
     def set_recorder(self, framerate, template="frame-%d.png", duration=None):
         """Will replace the app clock so that now we can ensure a steady
@@ -701,11 +702,11 @@ class Director(event.EventDispatcher):
         else:
             glDisable(GL_DEPTH_TEST)
 
-event_loop = pyglet.app.event_loop
-if not hasattr(event_loop, "event"):
-    event_loop = pyglet.app.EventLoop()
+#event_loop = pyglet.app.event_loop
+#if not hasattr(event_loop, "event"):
+#    event_loop = pyglet.app.EventLoop()
 director = Director()
-director.event = event_loop.event
+#director.event = event_loop.event
 """The singleton; check `cocos.director.Director` for details on usage.
 Don't instantiate Director(). Just use this singleton."""
 

@@ -1,6 +1,7 @@
 import os
-from settingproject import *
+from ProjectSettings import *
 import biplist
+from CCBDocument import *
 
 class App(object):
     def __init__(self):
@@ -95,3 +96,34 @@ class App(object):
         
     def updateResourcePathsFromProjectSettings(self):
         pass
+    
+    def openFile(self, fileName):
+        doc = biplist.readPlist(fileName)
+        newDoc = CCBDocument()
+        newDoc.fileName
+        newDoc.docData = doc
+        newDoc.exportPath = doc.get("exportPath")
+        newDoc.exportPlugIn = doc.get("exportPlugIn")
+        newDoc.exportFlattenPaths = doc.get("exportFlattenPaths")
+        
+        self.switchToDocument(newDoc)
+        
+        self.addDocument(newDoc)
+        self.hasOpenedDocument = True
+        
+        # Remove selections
+        self.setSelectedNodes(None)
+        
+        # Make sure timeline is up to date
+        
+    def switchToDocument(self, document, forceReload):
+        pass
+    
+    def addDocument(self, document):
+        pass
+    
+    def setSelectedNodes(self, selection):
+        pass
+    
+#
+theApp = App()

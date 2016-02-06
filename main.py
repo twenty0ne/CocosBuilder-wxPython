@@ -1,18 +1,18 @@
 import os
 import wx
-from app import *
-from panelresource import *
-from paneltool import *
-from panelproperty import *
-
-theApp = App()
+from App import *
+from PanelResource import *
+from PanelTool import *
+from PanelProperty import *
+from PanelStage import *
 
 class MainFrame(wx.Frame):
     def __init__(self):
         wx.Frame.__init__(self, None, -1, "CocosBuilder", size=(1150, 700))
         
-        panel = wx.Panel(self)
+        # panel = wx.Panel(self)
         # panel
+        panelStage = PanelStage(self)
         panelResource = PanelResource(self)
         panelProperty = PanelProperty(self)
         panelTool = PanelTool(self)
@@ -28,7 +28,7 @@ class MainFrame(wx.Frame):
         menuFile.AppendMenu(-1, "New", submenuNew)
         menuFile.AppendSeparator()
         item = menuFile.Append(-1, "Open...\tCtrl-O")
-        self.Bind(wx.EVT_MENU, self.OnMenuOpen, item)
+        self.Bind(wx.EVT_MENU, self.onMenuOpen, item)
         
         menuEdit = wx.Menu()
         
@@ -47,16 +47,33 @@ class MainFrame(wx.Frame):
         # panelToolbar = wx.Panel(self)
         # wx.Button(panelToolbar, -1, "Hello")
         
-        theApp.openProject("/Users/Tom/Desktop/mygit/CocosBuilder-wxPython/test/ccb3project.ccbproj")
+        # theApp.openProject("/Users/Tom/Desktop/mygit/CocosBuilder-wxPython/test/ccb3project.ccbproj")
         
-    def OnMenuOpen(self, evt):
+    def onMenuOpen(self, evt):
         dialog = wx.FileDialog(None, "Choose a file", os.getcwd(), "", "*.ccbproj", wx.OPEN)
         if dialog.ShowModal() == wx.ID_OK:
             print dialog.GetPath()
         dialog.Destroy()
+        
+class kApp(wx.App):
+    def __init__(self, redirect=False, filename=None,
+                 useBestVisual=False, clearSigInt=True):
+        """
+        :see: `wx.App.__init__`
+        """
+        wx.App.__init__(self, redirect, filename, useBestVisual, clearSigInt)
+        
+    def OnInit(self):
+        return True
 
 if __name__ == '__main__':
     app = wx.PySimpleApp()
     frame = MainFrame()
+    #test pygletwx
+    """
+    frame = wx.Frame(None, -1, "CocosBuilder", size=(1150, 700))
+    panel = PygletWX.EditorGLPanel(frame)
+    panel.ChangeImage(pyglet.image.load("images/btn-move.png"))
+    """
     frame.Show()
     app.MainLoop()
