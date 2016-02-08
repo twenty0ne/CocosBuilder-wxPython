@@ -16,7 +16,7 @@ class MainFrame(wx.Frame):
         panelResource = PanelResource(self)
         panelProperty = PanelProperty(self)
         panelTool = PanelTool(self)
-        
+                
         # create menu
         menuFile = wx.Menu()
         
@@ -54,17 +54,6 @@ class MainFrame(wx.Frame):
         if dialog.ShowModal() == wx.ID_OK:
             print dialog.GetPath()
         dialog.Destroy()
-        
-class kApp(wx.App):
-    def __init__(self, redirect=False, filename=None,
-                 useBestVisual=False, clearSigInt=True):
-        """
-        :see: `wx.App.__init__`
-        """
-        wx.App.__init__(self, redirect, filename, useBestVisual, clearSigInt)
-        
-    def OnInit(self):
-        return True
 
 if __name__ == '__main__':
     app = wx.PySimpleApp()
