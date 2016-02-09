@@ -1,12 +1,18 @@
 import os
 from ProjectSettings import *
 import biplist
-from CCBDocument import *
+from CCBDocument import CCBDocument
+from PlugInManager import thePlugIn
 
 class App(object):
     def __init__(self):
         object.__init__(self)
         self.projectSettings = None
+        
+        self._currentDocument = None
+        
+        # Load plug-ins
+        thePlugIn.loadPlugIns()
     
     def openProject(self, filename):
         """
@@ -116,8 +122,23 @@ class App(object):
         
         # Make sure timeline is up to date
         
-    def switchToDocument(self, document, forceReload):
-        pass
+    def switchToDocument(self, document, forceReload=False):
+        if not forceReload and document.filename == self._currentDocument.fileName:
+            return
+        
+        self.prepareForDocumentSwitch()
+        self._currentDocument = document
+        
+        self.replaceDocumentData(document.docData)
+        
+        self.updateResolutionMenu()
+        self.updateTimelineMenu()
+        self.updateStateOriginCenteredMenu()
+        
+        # TODO:@twenty0ne
+        # CocosScene* cs = [CocosScene cocosScene]
+        # [cs setStageZoom:document.stageZoom]
+        # [cs setScrollOffset:document.stageScrollOffset]
     
     def addDocument(self, document):
         pass
@@ -125,5 +146,19 @@ class App(object):
     def setSelectedNodes(self, selection):
         pass
     
+    def prepareForDocumentSwitch(self):
+        pass
+    
+    def replaceDocumentData(self, doc):
+        # TODO:@twenty0ne
+        # Process contents
+        loadedRoot = 
+    
+    def updateResolutionMenu(self):
+        pass
+    def updateTimelineMenu(self):
+        pass
+    def updateStateOriginCenteredMenu(self):
+        pass
 #
 theApp = App()

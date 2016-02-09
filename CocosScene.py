@@ -32,3 +32,6 @@ class CocosScene(Layer):
         print "mouseMoved"
         self._rulerLayer.updateMousePos(pos)
         
+    def replaceRootNodeWith(self, node):
+        pass
+        
