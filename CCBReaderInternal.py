@@ -1,3 +1,5 @@
+from PlugInManager import thePlugIn
+
 kCCBFileFormatVersion = 4
 
 def deserializeColor3(val):
@@ -10,7 +12,25 @@ def nodeGraphFromDictionary(doc, parentSize):
     children = doc.get("children")
     
     # Create the node
-    node = 
+    node = thePlugIn.createDefaultNodeOfType(baseClass)
+    if not node:
+        print "WARNING! Plug-in missing for " + baseClass
+        return None
+    
+    # TODO:@twenty0ne
+    # Fetch info and extra properties
+    
+    # Set properties for the node
+    for propInfo in props:
+        ntype = propInfo.get("type")
+        name = propInfo.get("name")
+        serializedValue = propInfo.get("value")
+        
+        # Check for renamings
+        # TODO:@twenty0ne
+        
+    
+    return node
 
 def nodeGraphFromDocumentDictionary(doc, parentSize):
     if not doc:
@@ -28,6 +48,9 @@ def nodeGraphFromDocumentDictionary(doc, parentSize):
     if fileVersion <= 2:
         # Use legacy reader
         # assetsPath = 
+        # TODO:@twenty0ne
+        assert(0)
+        pass
     elif fileVersion > kCCBFileFormatVersion:
         print "WARNING! Trying to load file made with a newer version of CocosBuilder"
         return None

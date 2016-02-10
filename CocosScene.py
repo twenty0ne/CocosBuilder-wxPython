@@ -1,8 +1,12 @@
+#import sys
+#import os
+#sys.path.append(os.path.join(os.path.dirname(__file__), 'cocos/'))
+
 import cocos
-from cocos.layer import Layer
+from cocos.layer import Layer,ColorLayer
 from RulersLayer import RulersLayer
 
-class CocosScene(Layer):    
+class CocosScene(Layer):
     def __init__(self):
         super(CocosScene, self).__init__()
         self._bgLayer = None
@@ -13,8 +17,19 @@ class CocosScene(Layer):
         self.setupEditorNodes()
     
     def setupEditorNodes(self):
+        # TODO:@twenty0ne
         self._rulerLayer = RulersLayer()
         self.add(self._rulerLayer, z=6)
+        
+        # Black content layer
+        self._stageBgLayer = ColorLayer(0,0,0,255,width=0,height=0)
+        self._stageBgLayer.anchor = 0.5,0.5
+        # TODO:@twenty0ne
+        # stageBgLayer.ignoreAnchorPointForPosition = NO
+        self.add(self._stageBgLayer, z=0)
+        
+        self._contentLayer = Layer()
+        self.add(self._contentLayer)
         
     def nextFrame(self):
         # Update rulers
@@ -34,4 +49,5 @@ class CocosScene(Layer):
         
     def replaceRootNodeWith(self, node):
         pass
-        
+    
+theCocosScene = None

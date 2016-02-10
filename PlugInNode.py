@@ -1,4 +1,5 @@
 import biplist
+from NSBundle import *
 
 class PlugInNode:
     def __init__(self, plugInPath):
@@ -30,15 +31,17 @@ class PlugInNode:
         self._positionProperty = props.get("positionProperty")
     
     def loadPropertiesForBundle(self, plugInPath, arr):
+        # TODO:@twenty0ne
+        # repeat load plist
         propsPath = plugInPath + "/CCBPProperties.plist"
         props = biplist.readPlist(propsPath)
         
         inheritsFrom = props.get("inheritsFrom")
         if inheritsFrom:
-            # TODO:@twenty0ne
-            pass
+            plugInPath = theNSBundle.getPlugInPath(inheritsFrom)
+            assert plugInPath
         
-        arr.append(props.get("properties"))
+        arr.extend(props.get("properties"))
         
         # Handle overridden properties
         overrides = props.get("propertiesOverridden")
@@ -47,6 +50,11 @@ class PlugInNode:
                 propName = propInfo.get("name")
                 
                 # Find the old property
+                for i in range(len(arr)):
+                    oldPropInfo = arr[i]
+                    if oldPropInfo.get("name") == propName:
+                        arr[i] = propInfo
+                        
     
     def setupNodePropsDict(self):
         # Transform the nodes info array to a dictionary for quicker lookups of properties

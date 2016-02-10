@@ -1,4 +1,6 @@
 from PlugInNode import PlugInNode
+from NSBundle import *
+import cocos
 
 class PlugInManager:
     def __init__(self):
@@ -7,7 +9,7 @@ class PlugInManager:
         self._plugInsNodeNamesCanBeRoot = []
     
     def loadPlugIns(self):
-
+        plugInPaths = theNSBundle._plugInPaths
         
         for plugInPath in plugInPaths:
             plugIn = PlugInNode(plugInPath)
@@ -22,10 +24,24 @@ class PlugInManager:
                 # Load icon
     
     def createDefaultNodeOfType(self, name):
-        pass
+        plugin = self.plugInNodeNamed(name)
+        if not plugin:
+            return None
+        
+        # TODO:@twenty0ne
+        # CocosBuilder-Mac use NSClassFromString
+        node = None
+        if plugin._nodeEditorClassName == "CCNode":
+            pass
+        elif plugin._nodeEditorClassName == "CCLayer":
+            node = cocos.layer.Layer()
+        else:
+            assert(0)
+            
+        return node
         
     def plugInNodeNamed(self, name):
-        pass
+        return self._plugInsNode[name]
         
 thePlugIn = PlugInManager()
         

@@ -34,3 +34,10 @@ class NSBundle:
                              "bundles/CCScrollView",
                              "bundles/CCSprite")
         
+    def getPlugInPath(self, className):
+        for path in self._plugInPaths:
+            if path.find(className) != -1:
+                return path
+        return None
+        
+theNSBundle = NSBundle()

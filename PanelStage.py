@@ -1,13 +1,17 @@
-import sys
-import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), './cocos/'))
+#import sys
+#import os
+#sys.path.insert(0, os.path.join(os.path.dirname(__file__), './cocos/'))
+#import cocos
 
 import wx
+#import cocos
 import PygletWX
 import cocos
 import pyglet
 
-from CocosScene import CocosScene
+from App import theApp
+
+import CocosScene
 
 # TODO:@twenty0ne
 # wx.Panel replace pyglet.window
@@ -61,10 +65,14 @@ class PanelStage(PygletWX.PygletGLPanel):
         #layer.add(label)
         
         #self.image = pyglet.image.load('images/btn-move.png')
-        layer = CocosScene()
+        layer = CocosScene.CocosScene()
         scene = cocos.scene.Scene(layer)         
         cocos.director.director.run(scene)         
         self._cocosScene = layer
+        CocosScene.theCocosScene = layer
+        
+        # test
+        theApp.openFile("test/TestMenus.ccb")
  
     def draw_objects(self):
         """Draws the objects on the canvas"""

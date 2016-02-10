@@ -1,8 +1,18 @@
-import os
+#import sys
+#import os
+#sys.path.insert(0, os.path.join(os.path.dirname(__file__), './cocos/'))
+#import cocos
+
 from ProjectSettings import *
 import biplist
 from CCBDocument import CCBDocument
-from PlugInManager import thePlugIn
+from PlugInManager import *
+import CCBReaderInternal
+
+#TODO:@twenty0ne
+# if import CocosScene here, will freeze
+import CocosScene
+#import CocosScene
 
 class App(object):
     def __init__(self):
@@ -123,7 +133,8 @@ class App(object):
         # Make sure timeline is up to date
         
     def switchToDocument(self, document, forceReload=False):
-        if not forceReload and document.filename == self._currentDocument.fileName:
+        if not forceReload and self._currentDocument and \
+           document.filename == self._currentDocument.fileName:
             return
         
         self.prepareForDocumentSwitch()
@@ -152,12 +163,18 @@ class App(object):
     def replaceDocumentData(self, doc):
         # TODO:@twenty0ne
         # Process contents
-        loadedRoot = 
-    
+        loadedRoot = CCBReaderInternal.nodeGraphFromDocumentDictionary(doc, (650,650))
+        
+        # Replace open document
+        self._selectedNodes = None
+        CocosScene.theCocosScene.replaceRootNodeWith(loadedRoot)
+        
     def updateResolutionMenu(self):
         pass
+    
     def updateTimelineMenu(self):
         pass
+    
     def updateStateOriginCenteredMenu(self):
         pass
 #

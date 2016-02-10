@@ -1,6 +1,13 @@
+import sys
 import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), './cocos'))
 import wx
+import PygletWX
+import cocos
+
 from App import *
+#import cocos
+
 from PanelResource import *
 from PanelTool import *
 from PanelProperty import *
@@ -48,6 +55,8 @@ class MainFrame(wx.Frame):
         # wx.Button(panelToolbar, -1, "Hello")
         
         # theApp.openProject("/Users/Tom/Desktop/mygit/CocosBuilder-wxPython/test/ccb3project.ccbproj")
+        
+        #theApp.openFile("test/TestMenus.ccb")
         
     def onMenuOpen(self, evt):
         dialog = wx.FileDialog(None, "Choose a file", os.getcwd(), "", "*.ccbproj", wx.OPEN)
