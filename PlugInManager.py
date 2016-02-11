@@ -30,11 +30,25 @@ class PlugInManager:
         
         # TODO:@twenty0ne
         # CocosBuilder-Mac use NSClassFromString
+        print "createDefaultNodeOfType - " + plugin._nodeEditorClassName
         node = None
         if plugin._nodeEditorClassName == "CCNode":
             pass
         elif plugin._nodeEditorClassName == "CCLayer":
             node = cocos.layer.Layer()
+        elif plugin._nodeEditorClassName == "CCLayerGradient":
+            # TODO:@twenty0ne
+            node = cocos.layer.Layer()
+        elif plugin._nodeEditorClassName == "CCBPMenu":
+            # TODO:@twenty0ne
+            node = cocos.menu.Menu("TITLE")
+        elif plugin._nodeEditorClassName == "CCMenuItemImage":
+            # TODO:@twenty0ne
+            # image, callback need to update
+            node = cocos.menu.ImageMenuItem("images/missing-texture.png", None)
+        elif plugin._nodeEditorClassName == "CCLabelBMFont":
+            # TODO:@twenty0ne
+            node = cocos.text.Label("label")
         else:
             assert(0)
             

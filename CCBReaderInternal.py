@@ -29,6 +29,22 @@ def nodeGraphFromDictionary(doc, parentSize):
         # Check for renamings
         # TODO:@twenty0ne
         
+    # Children load
+    # TODO:@twenty0ne
+    # contentSize = node.contentSize
+
+        
+    # TODO:@twenty0ne
+    if baseClass == "CCMenu":
+        childlist = []
+        for childdoc in children:
+            child = nodeGraphFromDictionary(childdoc, (100,100))
+            childlist.append(child)           
+        node.create_menu(childlist)
+    else:
+        for childdoc in children:
+            child = nodeGraphFromDictionary(childdoc, (100,100))
+            node.add(child)        
     
     return node
 

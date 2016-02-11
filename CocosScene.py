@@ -13,6 +13,7 @@ class CocosScene(Layer):
         self._stageBgLayer = None
         self._contentLayer = None
         self._rulerLayer = None
+        self._rootNode = None
         
         self.setupEditorNodes()
     
@@ -36,18 +37,24 @@ class CocosScene(Layer):
         self._rulerLayer.updateWithSize([700,650],[0,0],1)
         
     def mouseEntered(self):
-        print "mouseEntered"
+        # print "mouseEntered"
         self._rulerLayer.mouseEntered()
     
     def mouseExited(self):
-        print "mouseExited"
+        # print "mouseExited"
         self._rulerLayer.mouseExited()
         
     def mouseMoved(self, pos):
-        print "mouseMoved"
+        # print "mouseMoved"
         self._rulerLayer.updateMousePos(pos)
         
     def replaceRootNodeWith(self, node):
-        pass
+        if self._rootNode:
+            self._contentLayer.remove(self._rootNode)
+        self._rootNode = node
+        
+        if not node:
+            return        
+        self._contentLayer.add(node)
     
 theCocosScene = None
