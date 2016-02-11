@@ -63,3 +63,6 @@ class PlugInNode:
             if propName:
                 self._nodePropertiesDict[propName] = propInfo
                 
+                
+    def dontSetInEditorProperty(self, prop):
+        pass

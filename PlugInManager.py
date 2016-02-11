@@ -1,6 +1,8 @@
 from PlugInNode import PlugInNode
 from NSBundle import *
 import cocos
+import NodeInfo
+import CCBReaderInternal
 
 class PlugInManager:
     def __init__(self):
@@ -33,7 +35,7 @@ class PlugInManager:
         print "createDefaultNodeOfType - " + plugin._nodeEditorClassName
         node = None
         if plugin._nodeEditorClassName == "CCNode":
-            pass
+            node = cocos.cocosnode.CocosNode()
         elif plugin._nodeEditorClassName == "CCLayer":
             node = cocos.layer.Layer()
         elif plugin._nodeEditorClassName == "CCLayerGradient":
@@ -48,9 +50,32 @@ class PlugInManager:
             node = cocos.menu.ImageMenuItem("images/missing-texture.png", None)
         elif plugin._nodeEditorClassName == "CCLabelBMFont":
             # TODO:@twenty0ne
-            node = cocos.text.Label("label")
+            node = cocos.text.Label("missing-label")
+        elif plugin._nodeEditorClassName == "CCSprite":
+            node = cocos.sprite.Sprite("images/missing-texture.png")
+        elif plugin._nodeEditorClassName == "CCBPLabelTTF":
+            # TODO:@twenty0ne
+            node = cocos.text.Label("missing-label")
         else:
             assert(0)
+            
+        # 
+        nodeInfo = NodeInfo.nodeInfoWithPlugIn(plugin)
+        extraProps = nodeInfo._extraProps
+        node._userObject = nodeInfo
+        
+        # Set default data
+        plugInProps = plugin._nodeProperties
+        for propInfo in plugInProps:
+            defaultValue = propInfo.get("default")
+            if defaultValue:
+                name = propInfo.get("name")
+                ntype = propInfo.get("type")
+                if bool(propInfo.get("dontSetInEditor")):
+                    extraProps[name] = defaultValue
+                else:
+                    # Set the property on the object
+                    CCBReaderInternal.setProp(name, ntype, defaultValue, node, (0,0))
             
         return node
         

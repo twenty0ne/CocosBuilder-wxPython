@@ -1,6 +1,10 @@
-from PlugInManager import thePlugIn
+import PositionPropertySetter
+import PlugInManager
 
 kCCBFileFormatVersion = 4
+
+def deserializePoint(val):
+    return (val[0],val[1])
 
 def deserializeColor3(val):
     pass
@@ -12,13 +16,21 @@ def nodeGraphFromDictionary(doc, parentSize):
     children = doc.get("children")
     
     # Create the node
-    node = thePlugIn.createDefaultNodeOfType(baseClass)
+    node = PlugInManager.thePlugIn.createDefaultNodeOfType(baseClass)
     if not node:
         print "WARNING! Plug-in missing for " + baseClass
         return None
     
     # TODO:@twenty0ne
     # Fetch info and extra properties
+    nodeInfo = node._userObject
+    extraProps = nodeInfo._extraProps
+    plugIn = nodeInfo._plugIn
+    
+    # Flash skew compatibility
+    # TODO:@twenty0ne
+    # if bool(doc.get("usesFlashSkew")):
+    #    node
     
     # Set properties for the node
     for propInfo in props:
@@ -29,11 +41,30 @@ def nodeGraphFromDictionary(doc, parentSize):
         # Check for renamings
         # TODO:@twenty0ne
         
+        if plugIn.dontSetInEditorProperty(name):
+            extraProps[name] = serializedValue
+        else:
+            setProp(name, ntype, serializedValue, node, parentSize)
+            
+        baseValue = propInfo.get("baseValue")
+        # if baseValue:
+        # TODO:@twenty0ne
+        
+    # Set extra properties for code connections
+    customClass = doc.get("customClass", "")
+    memberVarName = doc.get("memberVarAssignmentName", "")
+    memberVarType = int(doc.get("memberVarAssignmentType"))
+    
+    extraProps["customClass"] = customClass
+    extraProps["memberVarAssignmentName"] = memberVarName
+    extraProps["memberVarAssignmentType"] = memberVarType
+    
+    # TODO:@twenty0ne
+    # JS code connections
+        
     # Children load
     # TODO:@twenty0ne
     # contentSize = node.contentSize
-
-        
     # TODO:@twenty0ne
     if baseClass == "CCMenu":
         childlist = []
@@ -73,5 +104,54 @@ def nodeGraphFromDocumentDictionary(doc, parentSize):
     
     return nodeGraphFromDictionary(nodeGraph, parentSize)
 
-def setProp(name, type, serializedValue, node, parentSize):
-    pass
+def setProp(name, ntype, serializedValue, node, parentSize):
+    # Fetch info and extra properties
+    nodeInfo = node._userObject
+    extraProps = nodeInfo._extraProps
+    
+    if ntype == "Position":
+        x = serializedValue[0]
+        y = serializedValue[1]
+        posType = 0
+        if len(serializedValue) == 3:
+            posType = serializedValue[2]
+        PositionPropertySetter.setPosition((x,y), posType, node, name, parentSize)
+    elif ntype == "Point" or ntype == "PointLock":
+        pt = deserializePoint(serializedValue)
+        # TODO:@twenty0ne
+    elif ntype == "Size":
+        w = serializedValue[0]
+        h = serializedValue[1]
+        size = (w, h)
+        sizeType = 0
+        if len(serializedValue) == 3:
+            sizeType = serializedValue[2]
+        PositionPropertySetter.setSize(size, sizeType, node, name, parentSize)
+    elif ntype == "Scale" or ntype == "ScaleLock":
+        x = float(serializedValue[0])
+        y = float(serializedValue[1])
+        scaleType = 0
+        if len(serializedValue) >= 3:
+            extraProps[name+"Lock"] = serializedValue[2]
+        if len(serializedValue) == 4:
+            scaleType = int(serializedValue[3])
+        #PositionPropertySetter.setScaledX
+        node.scale_x = x
+        node.scale_y = y
+    elif ntype == "FontTTF":
+        pass
+    elif ntype == "SpriteFrame":
+        pass
+    elif ntype == "Check":
+        # TODO:@twenty0ne
+        pass
+    elif ntype == "Color3":
+        # TODO:@twenty0ne
+        pass
+    elif ntype == "Byte" or ntype == "Blendmode" or \
+         ntype == "Block" or ntype == "Text" or ntype == "FntFile" or \
+         ntype == "Degrees" or ntype == "FloatScale" or ntype == "IntegerLabeled":
+        pass
+    else:
+        assert(0)
+        

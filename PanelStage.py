@@ -72,7 +72,7 @@ class PanelStage(PygletWX.PygletGLPanel):
         CocosScene.theCocosScene = layer
         
         # test
-        theApp.openFile("test/TestMenus.ccb")
+        theApp.openFile("test/TestSprites.ccb")
  
     def draw_objects(self):
         """Draws the objects on the canvas"""
