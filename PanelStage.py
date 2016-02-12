@@ -71,6 +71,8 @@ class PanelStage(PygletWX.PygletGLPanel):
         self._cocosScene = layer
         CocosScene.theCocosScene = layer
         
+        self._cocosScene.setStageBorder(0)
+        
         # test
         theApp.openFile("test/TestSprites.ccb")
  

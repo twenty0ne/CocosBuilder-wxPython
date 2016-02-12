@@ -156,8 +156,13 @@ def setProp(name, ntype, serializedValue, node, parentSize):
     elif ntype == "Color3":
         # TODO:@twenty0ne
         pass
+    elif ntype == "Text" or ntype == "String":
+        text = serializedValue
+        if not text:
+            text = ""
+        node.element.text = text
     elif ntype == "Byte" or ntype == "Blendmode" or \
-         ntype == "Block" or ntype == "Text" or ntype == "FntFile" or \
+         ntype == "Block" or ntype == "FntFile" or \
          ntype == "Degrees" or ntype == "FloatScale" or ntype == "IntegerLabeled":
         pass
     else:

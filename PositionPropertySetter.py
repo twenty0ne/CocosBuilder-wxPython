@@ -1,4 +1,12 @@
+# kCCBPosition
+kCCBPositionTypeRelativeBottomLeft = 0
+kCCBPositionTypeRelativeTopLeft = 1
+kCCBPositionTypeRelativeTopRight = 2
+kCCBPositionTypeRelativeBottomRight = 3
+kCCBPositionTypePercent = 4
+kCCBPositionTypeMultiplyResolution = 5
 
+# kCCBSizeType
 kCCBSizeTypeAbsolute = 0
 kCCBSizeTypePercent = 1
 kCCBSizeTypeRelativeContainer = 2
@@ -11,10 +19,27 @@ def setPosition(pos, ntype, node, prop, parentSize):
     
     # Set the position value
     # TODO:@twenty0ne
-    node.position = pos
+    node.position = absPos
     
 def calcAbsolutePositionFromRelative(pos, ntype, parentSize):
-    pass
+    absPos = (0,0)
+    
+    if ntype == kCCBPositionTypePercent:
+        # TODO:@twenty0ne
+        # roundf
+        absPos = (pos[0] * parentSize[0] * 0.01, pos[1] * parentSize[1] * 0.01)
+    elif ntype == kCCBPositionTypeRelativeBottomLeft:
+        absPos = pos
+    elif ntype == kCCBPositionTypeRelativeTopLeft:
+        absPos = (pos[0], parentSize[1] - pos[1])
+    elif ntype == kCCBPositionTypeRelativeTopRight:
+        absPos = (parentSize[0] - pos[0], parentSize[1] - pos[1])
+    elif ntype == kCCBPositionTypeRelativeBottomRight:
+        absPos = (parentSize[0] - pos[0], pos[1])
+    elif ntype == kCCBPositionTypeMultiplyResolution:
+        assert(0)
+    
+    return absPos
 
 def setSize(size, ntype, node, prop, parentSize):
     # Calculate absolute size

@@ -177,5 +177,8 @@ class App(object):
     
     def updateStateOriginCenteredMenu(self):
         pass
+    
+    
+        
 #
 theApp = App()
