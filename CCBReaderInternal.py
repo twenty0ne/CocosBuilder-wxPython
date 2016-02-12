@@ -1,7 +1,9 @@
 import PositionPropertySetter
+import TexturePropertySetter
 import PlugInManager
 
 kCCBFileFormatVersion = 4
+kCCBUseRegularFile = "Use regular file"
 
 def deserializePoint(val):
     return (val[0],val[1])
@@ -141,7 +143,13 @@ def setProp(name, ntype, serializedValue, node, parentSize):
     elif ntype == "FontTTF":
         pass
     elif ntype == "SpriteFrame":
-        pass
+        spriteSheetFile = serializedValue[0]
+        spriteFile = serializedValue[1]
+        if not spriteSheetFile or spriteSheetFile == "":
+            spriteSheetFile = kCCBUseRegularFile
+        extraProps[name+"Sheet"] = spriteSheetFile
+        extraProps[name] = spriteFile
+        TexturePropertySetter.setSpriteFrameForNode(node, name, spriteFile, spriteSheetFile)
     elif ntype == "Check":
         # TODO:@twenty0ne
         pass
